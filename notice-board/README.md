@@ -1,40 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Notice Board
 
-## Getting Started
+A full-stack Notice Board built for the Reno Platforms web development assignment. It supports creating, reading, updating, and deleting notices with server-side validation, Prisma + MySQL persistence, and responsive UI.
 
-First, run the development server:
+## Tech Stack
+
+- Next.js (Pages Router) + TypeScript
+- Prisma + TiDB Cloud (MySQL)
+- Tailwind CSS
+- Zod (server-side validation)
+- Vercel (deployment)
+
+## Features
+
+- Notice list with responsive cards
+- Shared create/edit form
+- Delete confirmation before removal
+- Urgent notices sorted first via Prisma `orderBy`
+- Red **Urgent** badge on urgent notices
+- Optional image URL field (bonus)
+- Server-side validation in API routes
+
+## Run Locally
+
+1. Clone the repository and install dependencies:
+
+```bash
+npm install
+```
+
+2. Create a `.env` file from the example:
+
+```bash
+cp .env.example .env
+```
+
+3. Add your hosted MySQL connection string to `.env`:
+
+```env
+DATABASE_URL="mysql://USER:PASSWORD@HOST:4000/notice_board?sslaccept=strict"
+```
+
+4. Push the Prisma schema to your database:
+
+```bash
+npx prisma db push
+npx prisma generate
+```
+
+5. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## API Routes
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/notices` | List all notices (Urgent first) |
+| POST | `/api/notices` | Create a notice |
+| GET | `/api/notices/[id]` | Get one notice |
+| PUT | `/api/notices/[id]` | Update a notice |
+| DELETE | `/api/notices/[id]` | Delete a notice |
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Push the project to a public GitHub repository.
+2. Import the repo into Vercel.
+3. Add the `DATABASE_URL` environment variable in Vercel project settings.
+4. Deploy.
+5. Run `npx prisma db push` once against the production database if tables are not created yet.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## One Thing I Would Improve With More Time
+
+Add proper image upload support (for example with Cloudinary) instead of only accepting image URLs, plus pagination and search/filter by category on the notice list page.
+
+## AI Usage
+
+AI was used to:
+
+- Plan the project structure and Prisma setup steps
+- Generate initial boilerplate for API routes, form components, and validation schemas
+- Troubleshoot TiDB/Prisma connection issues (provider mismatch and Prisma 7 config)
+- Draft the README structure
+
+All code was reviewed, adapted, and tested locally before submission.
